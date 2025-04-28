@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="camera" params="name">
+        <link name="${name}_camera">
+            <!-- <inertial>
+                <origin xyz="${x} ${y} ${z}" rpy="0 0 0"/>
+                <mass value="1.384936"/>
+                <inertia ixx="0.00104" ixy="-7.659E-17" ixz="-0.000000000000008721" iyx="-7.659E-17" iyy="0.001219" iyz="-0.000010728685" izx="-0.000000000000008721" izy="-0.000010728685" izz="0.0005682"/>
+            </inertial> -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/${name}_camera.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <!-- <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://W3-600B/meshes/bottom_camera.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision> -->
+        </link>
+    </xacro:macro>
+</robot>

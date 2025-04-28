@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="lidar" params="name x y z">
+        <link name="${name}_lidar">
+            <!-- <inertial>
+                <origin xyz="0.423797 0.139017 0.011563" rpy="0 0 0"/>
+                <mass value="0.569677"/>
+                <inertia ixx="0.0009071" ixy="0.000000243534" ixz="0.000014337829" iyx="0.000000243534" iyy="0.0008086" iyz="0.000074824692" izx="0.000014337829" izy="0.000074824692" izz="0.0005095"/>
+            </inertial> -->
+            <visual>
+                <xacro:if value="${name == 'front'}">
+                    <xacro:property name="rotate" value="1.57"/>
+                </xacro:if>
+                <xacro:if value="${name == 'back'}">
+                    <xacro:property name="rotate" value="0"/>
+                </xacro:if>
+
+                <origin xyz="${x} ${y} ${z}" rpy="0 ${rotate} 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/${name}_lidar.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <!-- <collision>
+                <origin xyz="0.424631 0.1165 0" rpy="0 1.57 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/front_lidar.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision> -->
+        </link>
+    </xacro:macro>
+</robot>

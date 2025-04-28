@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="caster_wheel" params="name x y z">
+
+        <!-- BACK RIGHT CASTER -->
+        <link name="caster_wheel_${name}_1">
+            <inertial>
+                <origin xyz="0.0 0.0 0.013679895" rpy="0 0 0"/>
+                <mass value="0.648186"/>
+                <inertia ixx="32.110336" ixy="-0.000001493513" ixz="-0.000011677849" iyy="32.098568" iyz="0.000000016651" izz="57.71662" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="caster_wheel_${name}_2">
+            <inertial>
+                <origin xyz="0.0 0.0 0.013679895" rpy="0 0 0"/>
+                <mass value="0.648234"/>
+                <inertia ixx="32.110336" ixy="-0.000001493513" ixz="-0.000011677849" iyy="32.098568" iyz="0.000000016651" izz="57.71662" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="caster_support_${name}">
+            <inertial>
+                <origin xyz="0.018014271 0.051245800 0.000070723" rpy="0 0 0"/>
+                <mass value="1.304324"/>
+                <inertia ixx="141.765056" ixy="-15.302794" ixz="0.211610422" iyy="172.001216" iyz="0.60176325" izz="146.500608" />
+            </inertial>
+            <visual>
+                <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <!-- <collision>
+                <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://W3-600B/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision> -->
+        </link>
+        
+        <!-- support joint -->
+        <xacro:if value="${name == 'br'}">
+            <joint name="caster_support_${name}_joint" type="continuous">
+                <parent link="base_link"/>
+                <child link="caster_support_${name}"/>
+                <origin xyz="${x + caster_support_x_offset} ${y + caster_support_y_offset} ${z}" rpy="0 0 0"/>
+                <axis xyz="0 1 0"/>
+            </joint>
+        </xacro:if>
+        <xacro:if value="${name != 'br'}">
+            <joint name="caster_support_${name}_joint" type="continuous">
+                <parent link="base_link"/>
+                <child link="caster_support_${name}"/>
+                <origin xyz="${x} ${y + caster_support_y_offset} ${z + caster_support_x_offset}" rpy="0 0 0"/>
+                <axis xyz="0 1 0"/>
+            </joint>
+        </xacro:if>
+
+        <!-- 1 wheel -->
+        <joint name="caster_wheel_${name}_1_joint" type="continuous">
+            <parent link="caster_support_${name}"/>
+            <child link="caster_wheel_${name}_1"/>
+            <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+        <!-- 2 wheel -->
+        <joint name="caster_wheel_${name}_2_joint" type="continuous">
+            <parent link="caster_support_${name}"/>
+            <child link="caster_wheel_${name}_2"/>
+            <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+    </xacro:macro>
+</robot>
