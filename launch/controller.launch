@@ -1,9 +1,9 @@
 <launch>
 
-<rosparam file="$(find W3-600B_description)/launch/controller.yaml" command="load"/>
-<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="W3-600B" args="joint_state_controller "/>
+<rosparam file="$(find w3_600b_description)/launch/controller.yaml" command="load"/>
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="w3_600b" args="joint_state_controller "/>
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
-  <remap from="/joint_states" to="/W3-600B/joint_states"/>
+  <remap from="/joint_states" to="/w3_600b/joint_states"/>
 </node>
 
 </launch>

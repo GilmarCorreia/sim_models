@@ -1,2 +1,2 @@
-# W3-600B-model
-W3-600B URDF for the AMR model from SEER Robotics
+# w3_600b-model
+w3_600b URDF for the AMR model from SEER Robotics

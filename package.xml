@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>W3-600B</name>
+  <name>w3_600b</name>
   <version>0.0.0</version>
-  <description>The W3-600B model</description>
+  <description>The w3_600b model</description>
   <maintainer email="gilmarcorreiajeronimo@gmail.com">Gilmar Correia</maintainer>
   <license>TODO</license>
 

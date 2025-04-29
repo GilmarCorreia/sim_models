@@ -1,4 +1,4 @@
-W3-600B_controller:
+w3_600b_controller:
   # Publish all joint states -----------------------------------
   joint_state_controller:
     type: joint_state_controller/JointStateController

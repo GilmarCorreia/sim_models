@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<robot name="w3_600b" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Offset properties -->
+  <xacro:property name="caster_support_x_offset" value="0.02"/>
+  <xacro:property name="caster_support_y_offset" value="0.0685"/>
+  <!-- <xacro:property name="caster_support_z_offset" value="0"/>
+
+  <xacro:property name="caster_wheel_x_offset" value="0"/>
+  <xacro:property name="caster_wheel_y_offset" value="0"/>
+  <xacro:property name="caster_wheel_z_offset" value="0"/> -->
+
+  <xacro:property name="wheel_z_offset" value="0.147197"/>
+  <xacro:property name="tray_y_offset" value="0.21150"/>
+
+  <!-- Include files -->
+  <xacro:include filename="$(find w3_600b)/urdf/materials.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/w3_600b.trans" />
+  <xacro:include filename="$(find w3_600b)/urdf/w3_600b.gazebo" />
+  <xacro:include filename="$(find w3_600b)/urdf/caster_wheel.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/camera.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/lidar.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/wheel.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/tray.xacro" />
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.001608 0.058048 -0.000259" rpy="0 0 0"/>
+      <mass value="69.363439"/>
+      <inertia ixx="3.742" ixy="-0.001876" ixz="0.001144" iyx="-0.001876" iyy="9.426" iyz="0.0002847" izx="0.001144" izy="0.0002847" izz="6.169"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://w3_600b/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://w3_600b/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <xacro:caster_wheel name="br" x="-0.309" y="0.0131" z="0.248"/>
+  <xacro:caster_wheel name="bl" x="-0.289" y="0.0131" z="-0.268"/>
+  <xacro:caster_wheel name="fr" x="0.335" y="0.0131" z="0.157"/>
+  <xacro:caster_wheel name="fl" x="0.335" y="0.0131" z="-0.197"/>
+
+  <xacro:camera name="downward"/>
+  <xacro:camera name="upward"/>
+
+  <xacro:lidar name="front" x="0.424631" y="0.1165" z="0"/>
+  <xacro:lidar name="back" x="0" y="0" z="0"/>
+
+  <xacro:wheel name="left" x="0" y="0.0575" z="-0.131553"/>
+  <xacro:wheel name="right" x="0" y="0.0575" z="0.131553"/>
+
+  <xacro:tray/>
+
+</robot>
