@@ -17,11 +17,15 @@
   <xacro:include filename="$(find w3_600b)/urdf/materials.xacro" />
   <xacro:include filename="$(find w3_600b)/urdf/w3_600b.trans" />
   <xacro:include filename="$(find w3_600b)/urdf/w3_600b.gazebo" />
-  <xacro:include filename="$(find w3_600b)/urdf/caster_wheel.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/camera.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/lidar.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/wheel.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/tray.xacro" />
+
+  <xacro:include filename="$(find w3_600b)/urdf/structure/caster_wheel.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/structure/tray.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/structure/wheel.xacro" />
+
+  <xacro:include filename="$(find w3_600b)/urdf/sensors/camera.xacro" />
+  <xacro:include filename="$(find w3_600b)/urdf/sensors/lidar.xacro" />
+  
+  <!-- STRUCTURE -->
 
   <link name="base_link">
     <inertial>
@@ -59,5 +63,7 @@
   <xacro:wheel name="right" x="0" y="0.0575" z="0.131553"/>
 
   <xacro:tray/>
+
+  <!-- CONTROL -->
 
 </robot>
