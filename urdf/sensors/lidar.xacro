@@ -28,5 +28,55 @@
                 </geometry>
             </collision> -->
         </link>
+
+        <gazebo reference="${prefix}${link}">
+            <!-- <material value="Gazebo/Yellow" /> -->
+            <material value="Gazebo/FlatBlack" />
+      
+            <sensor type="ray" name="${prefix}${link}">
+                <pose>0 0 0 0 0 0</pose>
+                <visualize>false</visualize>
+                <update_rate>12.5</update_rate>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>684</samples>
+                            <resolution>1</resolution>  <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
+                            <min_angle>-2.35619449615</min_angle>
+                            <max_angle>2.35619449615</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.05</min>
+                        <max>29.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <!-- Noise parameters based on published spec for S300 achieving
+                            "+-29mm" accuracy at range < 3m (~0.01 of the range) at
+                            1 sigma. -->
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </ray>
+                <xacro:if value="${gazebo_version == 'classic'}">
+                    <xacro:property name="sensor_name" value="${link.replace('_link','')}"/>
+                    <plugin name="${sensor_name}" filename="libgazebo_ros_ray_sensor.so">
+                        <ros>
+                            <namespace>/$(arg model_name)/lidar_sensor_broadcaster</namespace>
+                            <remapping>${sensor_name}/out:=${sensor_name}/scan</remapping>
+                        </ros>
+                        <output_type>sensor_msgs/LaserScan</output_type> 
+                        <frame_name>${prefix}${link}</frame_name>
+                    </plugin>
+                </xacro:if>
+                <xacro:if value="${gazebo_version == 'ignition'}">
+                    <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+                        <render_engine>ogre2</render_engine>
+                    </plugin>
+                </xacro:if>
+            </sensor>
+        </gazebo>
     </xacro:macro>
 </robot>

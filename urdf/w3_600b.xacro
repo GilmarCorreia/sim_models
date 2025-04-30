@@ -1,5 +1,16 @@
 <?xml version="1.0" ?>
 <robot name="w3_600b" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- Model properties -->
+  <xacro:property name="model_class" value="robots" />
+  <xacro:property name="model" value="w3_600b" />
+  <xacro:arg name="model_name" default="bot" />
+
+  <!-- Simulation properties -->
+  <xacro:arg name="gazebo_version" default="classic" />
+  <xacro:property name="gazebo_version" value="$(arg gazebo_version)"/>
+
+  <coppelia_file filename="$(find w3_600b)/models/${model_class}/${model}/files/CoppeliaSim/w3_600b.ttm"/>
 
   <!-- Offset properties -->
   <xacro:property name="caster_support_x_offset" value="0.02"/>
@@ -53,11 +64,11 @@
   <xacro:caster_wheel name="fr" x="0.335" y="0.0131" z="0.157"/>
   <xacro:caster_wheel name="fl" x="0.335" y="0.0131" z="-0.197"/>
 
-  <xacro:camera name="downward"/>
+  <!-- <xacro:camera name="downward"/>
   <xacro:camera name="upward"/>
 
   <xacro:lidar name="front" x="0.424631" y="0.1165" z="0"/>
-  <xacro:lidar name="back" x="0" y="0" z="0"/>
+  <xacro:lidar name="back" x="0" y="0" z="0"/> -->
 
   <xacro:wheel name="left" x="0" y="0.0575" z="-0.131553"/>
   <xacro:wheel name="right" x="0" y="0.0575" z="0.131553"/>
@@ -65,5 +76,97 @@
   <xacro:tray/>
 
   <!-- CONTROL -->
+  <xacro:if value="${gazebo_version == 'classic'}">
+    <ros2_control name="GazeboSystem" type="system">
+      <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+      <!-- <joint name="${prefix}left_wheel_joint"> -->
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity">
+            <param name="min">-10</param>
+            <param name="max">10</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+      <!-- <joint name="${prefix}right_wheel_joint"> -->
+      <joint name="right_wheel_joint">
+          <command_interface name="velocity">
+              <param name="min">-10</param>
+              <param name="max">10</param>
+          </command_interface>
+          <state_interface name="velocity" />
+          <state_interface name="position" />
+      </joint>
+      <sensor name="imu_sensor">
+        <state_interface name="orientation.x" />
+        <state_interface name="orientation.y" />
+        <state_interface name="orientation.z" />
+        <state_interface name="orientation.w" />
+        <state_interface name="angular_velocity.x" />
+        <state_interface name="angular_velocity.y" />
+        <state_interface name="angular_velocity.z" />
+        <state_interface name="linear_acceleration.x" />
+        <state_interface name="linear_acceleration.y" />
+        <state_interface name="linear_acceleration.z" />
+      </sensor>
+    </ros2_control>
+    <gazebo>
+      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <ros>
+          <namespace>/$(arg model_name)</namespace>
+        </ros>
+        <parameters>$(find w3_600b)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+  
+  <xacro:if value="${gazebo_version == 'ignition'}">
+    <ros2_control name="IgnitionSystem" type="system">
+      <hardware>
+        <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      </hardware>
+      <!-- <joint name="${prefix}left_wheel_joint"> -->
+      <joint name="left_wheel_joint">
+        <command_interface name="velocity">
+            <param name="min">-10</param>
+            <param name="max">10</param>
+        </command_interface>
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+      </joint>
+      <!-- <joint name="${prefix}right_wheel_joint"> -->
+      <joint name="right_wheel_joint">
+          <command_interface name="velocity">
+              <param name="min">-10</param>
+              <param name="max">10</param>
+          </command_interface>
+          <state_interface name="velocity" />
+          <state_interface name="position" />
+      </joint>
+      <sensor name="imu_sensor">
+        <state_interface name="orientation.x" />
+        <state_interface name="orientation.y" />
+        <state_interface name="orientation.z" />
+        <state_interface name="orientation.w" />
+        <state_interface name="angular_velocity.x" />
+        <state_interface name="angular_velocity.y" />
+        <state_interface name="angular_velocity.z" />
+        <state_interface name="linear_acceleration.x" />
+        <state_interface name="linear_acceleration.y" />
+        <state_interface name="linear_acceleration.z" />
+      </sensor>
+    </ros2_control>
+    <gazebo>
+      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <ros>
+          <namespace>/$(arg model_name)</namespace>
+          <remapping>/$(arg model_name)/joint_states:=/joint_state_broadcaster/joint_states</remapping>
+        </ros>
+        <parameters>$(find w3_600b)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:if>
 
 </robot>
