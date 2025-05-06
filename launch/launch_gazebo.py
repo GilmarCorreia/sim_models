@@ -13,7 +13,7 @@ from launch_simulator import LaunchSimulator
 
 class Gazebo(LaunchSimulator):
 
-    def __init__(self, gazebo_version, model_name, robot_description = None, scene = "empty", total_time=0, enable_logger=False, enable_headless=False):
+    def __init__(self, gazebo_version, model_name, robot_description = None, scene = "empty", enable_headless=False):
         self.__setGazeboVersion(gazebo_version)
         self.default_world = "empty.sdf"
         self.nodesAfterSimStart = []
@@ -22,8 +22,6 @@ class Gazebo(LaunchSimulator):
                          model_name=model_name, 
                          robot_description=robot_description,
                          scene=scene,
-                         total_time=total_time,
-                         enable_logger=enable_logger,
                          enable_headless=enable_headless
                         )
 
@@ -48,27 +46,12 @@ class Gazebo(LaunchSimulator):
         if self.getScene() != "empty":
             spawn_model = True
         
-        if self.getEnableLogger():
-            launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}_plugin.world"
-        else:
-            launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
+        launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
 
         if self.getEnableHeadless():
             gazebo_launch_file = "gzclient.launch.py"
         else:
             gazebo_launch_file = "gazebo.launch.py"
-
-        # gazebo_launch_command = f"ros2 launch gazebo_ros {gazebo_launch_file}"
-        # for tag, value in launch_arguments.items():
-        #     gazebo_launch_command += f" {tag}:={value}"
-
-        # print(gazebo_launch_command)
-        # node_gazebo = ExecuteProcess(
-        #     name="gazebo_launcher",
-        #     cmd=[gazebo_launch_command],
-        #     shell=True,
-        #     output='screen'
-        # )
 
         node_gazebo = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -82,90 +65,15 @@ class Gazebo(LaunchSimulator):
         )
         self.addNode(node_gazebo)
 
+        # Wait until gazebo has launched
         self.clock_checker = Node(
-            package='senai_models',
+            package='sim_models',
             executable='clock_waiter',
             name='clock_waiter_gazebo',
             output='screen'
         )
 
         self.addNode(self.clock_checker)
-
-        # if (platform.system() == "Windows"):
-        #     exit_event_handler = RegisterEventHandler(
-        #         OnProcessExit(
-        #             target_action=node_gazebo,
-        #             on_exit=[
-        #                 launch.actions.LogInfo(msg="Close the Process with Ctrl+C.")
-        #             ]
-        #         )
-        #     )
-        # else:
-        #     exit_event_handler = RegisterEventHandler(
-        #         OnProcessExit(
-        #             target_action=node_gazebo,
-        #             on_exit=[
-        #                 launch.actions.Shutdown()
-        #             ]
-        #         )
-        #     )
-
-        # self.addNode(exit_event_handler)
-
-        if self.getTotalTime() > 0:
-            # shutdown_timer = Node(
-            #     package='senai_models',
-            #     executable='clock_timer',
-            #     name='clock_timer',
-            #     output='screen',
-            #     parameters=[
-            #         {
-            #             'sim_time': self.getTotalTime(),
-            #         }
-            #     ]
-            # )
-
-            # if (platform.system() == "Windows"):
-            #     exit_event_handler = RegisterEventHandler(
-            #         OnProcessExit(
-            #             target_action=shutdown_timer,
-            #             on_exit=[
-            #                 launch.actions.LogInfo(msg="Close the Process with Ctrl+C.")
-            #             ]
-            #         )
-            #     )
-            # else:
-            #     exit_event_handler = RegisterEventHandler(
-            #         OnProcessExit(
-            #             target_action=shutdown_timer,
-            #             on_exit=[
-            #                 launch.actions.LogInfo(msg="Gazebo closed. Shutting down other nodes..."),
-            #                 launch.actions.Shutdown()
-            #             ]
-            #         )
-            #     )
-            
-            # Adicione um temporizador para parar o primeiro launch após 1 segundo
-            if (platform.system() == "Windows"):
-                shutdown_timer = TimerAction(
-                    period=float(self.getTotalTime()),  # Tempo em segundos (1 segundo)
-                    actions=[
-                        launch.actions.LogInfo(msg="Close the Process with Ctrl+C.")
-                    ]
-                )
-            else:
-                shutdown_timer = TimerAction(
-                    period=float(self.getTotalTime()),  # Tempo em segundos (1 segundo)
-                    actions=[
-                        launch.actions.LogInfo(msg="Gazebo closed. Shutting down other nodes..."),
-                        launch.actions.LogInfo(msg="Close the Process with Ctrl+C."),
-                        launch.actions.Shutdown()
-                    ]
-                )
-
-            #self.addNode(shutdown_timer)
-            self.nodesAfterSimStart.append(shutdown_timer)
-            #self.nodesAfterSimStart.append(exit_event_handler)
 
         if spawn_model and self.getScene() != "empty":
             if (platform.system() == "Windows"):

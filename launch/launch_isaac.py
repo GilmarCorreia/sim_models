@@ -15,13 +15,11 @@ from launch_simulator import LaunchSimulator
 
 class IsaacSim(LaunchSimulator):
 
-    def __init__(self, model_name, robot_description=None, scene = "empty", total_time=0, enable_logger=False, enable_headless=False):
+    def __init__(self, model_name, robot_description=None, scene = "empty", enable_headless=False):
         super().__init__(name="IsaacSim", 
                          model_name=model_name, 
                          robot_description=robot_description,
                          scene=scene,
-                         total_time=total_time,
-                         enable_logger=enable_logger,
                          enable_headless=enable_headless
                         )
 
@@ -50,13 +48,11 @@ class IsaacSim(LaunchSimulator):
         #         scene_path = f"{get_package_share_directory(self.getPkgName())}/worlds/CoppeliaSim/{self.getScene()}.ttt"
         #         coppelia_sim_command += f"-f\"{scene_path}\""
 
-        if self.getEnableLogger():
-            omni.kit.app.get_app().get_extension_manager().set_extension_enabled_immediate("omni.isaac.logger", True)
-        #     coppelia_sim_command += "-c\"require('simLogger')\" "
+        # if self.getEnableLogger():
+        #     omni.kit.app.get_app().get_extension_manager().set_extension_enabled_immediate("omni.isaac.logger", True)
         
         if self.getEnableHeadless():
             pass
-        #     coppelia_sim_command += "-H "
         
         timeline = omni.timeline.get_timeline_interface()
         timeline.play()

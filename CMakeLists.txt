@@ -24,7 +24,7 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
 install(
-  DIRECTORY launch meshes rviz worlds urdf
+  DIRECTORY launch models worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

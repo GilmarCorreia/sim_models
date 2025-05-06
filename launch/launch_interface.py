@@ -4,7 +4,7 @@ class LaunchInterface(ABC):
 
     def __init__(self, name):
         self.__setInterfaceName(name)
-        self.__setPkgName("senai_models")
+        self.__setPkgName("sim_models")
         self.__nodes = []
 
         self.createInterfaceNodes()

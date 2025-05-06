@@ -12,13 +12,11 @@ from launch_simulator import LaunchSimulator
 
 class CoppeliaSim(LaunchSimulator):
 
-    def __init__(self, model_name, robot_description=None, scene = "empty", total_time=0, enable_logger=False, enable_headless=False):
+    def __init__(self, model_name, robot_description=None, scene = "empty", enable_headless=False):
         super().__init__(name="CoppeliaSim", 
                          model_name=model_name, 
                          robot_description=robot_description,
                          scene=scene,
-                         total_time=total_time,
-                         enable_logger=enable_logger,
                          enable_headless=enable_headless
                         )
 

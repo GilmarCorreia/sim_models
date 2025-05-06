@@ -15,27 +15,25 @@ from launch_rviz2 import RViz2
 from launch_coppelia import CoppeliaSim
 from launch_gazebo import Gazebo
 #from launch_isaac import IsaacSim
-from launch_metrics import Metrics
-from launch_controller import Controller
 
-pkg_name = 'senai_models'
+pkg_name = 'sim_models'
 default_class = "robots"
 
-default_model = "mir100"
-default_model_name = "MiR100"
+default_model = "w3_600b"
+default_model_name = "w3_600b"
 
 #Choose between "ignition" or "classic"
 default_gazebo = "classic"
 
 # Models supported organized by class
 sensors = []
-robots = ["mir100"]
+robots = ["w3_600b"]
 
 def generate_launch_description():
 
     # Specify the name of the package and path to xacro file within the package
-    model_arg = DeclareLaunchArgument(name='model', description='Set the model to configure (Ex: mir100)')
-    model_name_arg = DeclareLaunchArgument(name='model_name', default_value=str(default_model_name), description='Set the model name (default: MiR100)')
+    model_arg = DeclareLaunchArgument(name='model', description='Set the model to configure (Ex: w3_600b)')
+    model_name_arg = DeclareLaunchArgument(name='model_name', default_value=str(default_model_name), description='Set the model name (default: W3600B)')
     model_namespace_arg = DeclareLaunchArgument(name='model_namespace', default_value=str(""), description='Set the model namespace (Ex: /testNS)')
     scene_arg = DeclareLaunchArgument(name="scene",default_value=str("empty"), description='Set the desired scene (default: empty)')
     launch_rviz2_arg = DeclareLaunchArgument(name='launch_rviz2', default_value='false', description='Execute rviz2 automatically (default: false)')
@@ -43,9 +41,6 @@ def generate_launch_description():
     launch_gazebo_arg = DeclareLaunchArgument(name='launch_gazebo', default_value='false', description='Execute Gazebo automatically (default: false)')
     launch_isaac_arg = DeclareLaunchArgument(name='launch_isaac', default_value='false', description='Execute IsaacSim automatically (default: false)')
     enable_headless = DeclareLaunchArgument(name='enable_headless', default_value='false', description='Execute simulation in headless mode (default: false)')
-    enable_logger = DeclareLaunchArgument(name='enable_logger', default_value='false', description='Execute simulation logger plugin (default: false)')
-    total_time = DeclareLaunchArgument(name='total_time', default_value=str(0), description='Total simulation time in seconds (default: 0 - non stop)')
-    controller_name = DeclareLaunchArgument(name='controller_name', default_value='None', description='Specify a controller from senai_controls to execute a robot action (default: None)')
 
     # Run the node
     return LaunchDescription([
@@ -59,9 +54,6 @@ def generate_launch_description():
         launch_gazebo_arg, # OPTIONAL_ARG
         launch_isaac_arg, # OPTIONAL_ARG
         enable_headless, # OPTIONAL_ARG
-        enable_logger, # OPTIONAL_ARG
-        total_time, # OPTIONAL_ARG
-        controller_name, # OPTIONAL_ARG
         OpaqueFunction(function=launch_setup)
     ])
 
@@ -73,7 +65,7 @@ def getRobotDescriptionRaw(model, model_class, model_name):
     xacro_args = {
         'model_name': model_name,
         'gazebo_version': default_gazebo,
-        'tf_prefix': model_name
+        #'tf_prefix': model_name
     }
 
     # Use xacro to process the file
@@ -105,10 +97,6 @@ def launch_setup(context, *args, **kwargs):
     launch_isaac = (LaunchConfiguration('launch_isaac').perform(context) == "true")
 
     enable_headless = (LaunchConfiguration('enable_headless').perform(context) == "true")
-    enable_logger = (LaunchConfiguration('enable_logger').perform(context) == "true")
-    total_time = int(LaunchConfiguration('total_time').perform(context))
-
-    controller_name = LaunchConfiguration('controller_name').perform(context)
     
     # Setting parameters
     if (model in sensors):
@@ -134,22 +122,20 @@ def launch_setup(context, *args, **kwargs):
 
     # Choosing which simulator will be launch
     if launch_coppelia:
-        coppeliaConfig = CoppeliaSim(model_name, robot_description_raw, scene, total_time, enable_logger, enable_headless)
+        coppeliaConfig = CoppeliaSim(model_name, robot_description_raw, scene, enable_headless)
         nodes.extend(coppeliaConfig.getInterfaceNodes())
     elif launch_gazebo:
-        gazeboConfig = Gazebo(default_gazebo, model_name, robot_description_raw, scene, total_time, enable_logger, enable_headless)
+        gazeboConfig = Gazebo(default_gazebo, model_name, robot_description_raw, scene, enable_headless)
         nodes.extend(gazeboConfig.getInterfaceNodes())
     elif launch_isaac:
         pass
-        #isaacConfig = IsaacSim(model_name, robot_description_raw, scene, total_time, enable_logger, enable_headless)
-        #nodes.extend(isaacConfig.getInterfaceNodes())
 
-    if enable_logger:
-        metricsConfig = Metrics(model_name, scene)
-        nodes.extend(metricsConfig.getInterfaceNodes())
+    # if enable_logger:
+    #     metricsConfig = Metrics(model_name, scene)
+    #     nodes.extend(metricsConfig.getInterfaceNodes())
 
-    if controller_name != "None":
-        controllerConfig = Controller(model, model_name, controller_name)
-        nodes.extend(controllerConfig.getInterfaceNodes())
+    # if controller_name != "None":
+    #     controllerConfig = Controller(model, model_name, controller_name)
+    #     nodes.extend(controllerConfig.getInterfaceNodes())
 
     return nodes
