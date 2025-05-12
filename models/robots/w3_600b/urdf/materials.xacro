@@ -1,8 +1,40 @@
 <?xml version="1.0" ?>
 <robot name="w3_600b" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<material name="silver">
-  <color rgba="0.700 0.700 0.700 1.000"/>
-</material>
+<!-- Cores para Gazebo e RViz2 -->
+  <xacro:property name="color_blue_body" value="0.2 0.6 0.8 1.0"/>     <!-- azul claro -->
+  <xacro:property name="color_dark_gray" value="0.2 0.2 0.2 1.0"/>     <!-- rodas/cinza escuro -->
+  <xacro:property name="color_top_gray" value="0.6 0.6 0.6 1.0"/>      <!-- tampa metálica -->
+  <xacro:property name="color_led_cyan" value="0.0 1.0 1.0 1.0"/>      <!-- LED azul -->
+  <xacro:property name="color_led_pink" value="1.0 0.4 0.8 1.0"/>      <!-- LED rosa -->
+  <xacro:property name="color_button_green" value="0.0 0.8 0.0 1.0"/>  <!-- botão verde -->
+  <xacro:property name="color_button_red" value="0.8 0.0 0.0 1.0"/>    <!-- botão vermelho -->
+
+  <!-- Material definitions -->
+  <material name="blue_body">
+    <color rgba="${color_blue_body}"/>
+  </material>
+  <material name="dark_gray">
+    <color rgba="${color_dark_gray}"/>
+  </material>
+  <material name="top_gray">
+    <color rgba="${color_top_gray}"/>
+  </material>
+  <material name="led_cyan">
+    <color rgba="${color_led_cyan}"/>
+  </material>
+  <material name="led_pink">
+    <color rgba="${color_led_pink}"/>
+  </material>
+  <material name="button_green">
+    <color rgba="${color_button_green}"/>
+  </material>
+  <material name="button_red">
+    <color rgba="${color_button_red}"/>
+  </material>
+
+  <material name="silver">
+    <color rgba="0.700 0.700 0.700 1.000"/>
+  </material>
 
 </robot>

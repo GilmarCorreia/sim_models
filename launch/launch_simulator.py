@@ -29,6 +29,9 @@ class LaunchSimulator(LaunchInterface):
 
     def getRobotDescription(self):
         return self.__robot_description
+    
+    def getRobotDescriptionTopicName(self):
+        return f"/{self.getModelName()}/robot_description"
 
     def getScene(self):
         return self.__scene

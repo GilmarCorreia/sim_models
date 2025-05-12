@@ -34,19 +34,13 @@ class Gazebo(LaunchSimulator):
         return self.__gazebo_version
 
     ########### METHODS ###########
-    def createGazeboClassicNodes(self):
-
-        robot_description_node_name = f"/{self.getModelName()}/robot_description"
-            
+    def createGazeboClassicNodes(self):            
         launch_arguments = {
             "verbose": "true"
         }
 
-        spawn_model = False
         if self.getScene() != "empty":
-            spawn_model = True
-        
-        launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
+            launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
 
         if self.getEnableHeadless():
             gazebo_launch_file = "gzclient.launch.py"
@@ -65,46 +59,44 @@ class Gazebo(LaunchSimulator):
         )
         self.addNode(node_gazebo)
 
-        # Wait until gazebo has launched
-        self.clock_checker = Node(
-            package='sim_models',
-            executable='clock_waiter',
-            name='clock_waiter_gazebo',
-            output='screen'
-        )
+        # # Wait until gazebo has launched
+        # self.clock_checker = Node(
+        #     package='sim_models',
+        #     executable='clock_waiter',
+        #     name='clock_waiter_gazebo',
+        #     output='screen'
+        # )
 
-        self.addNode(self.clock_checker)
+        # self.addNode(self.clock_checker)
 
-        if spawn_model and self.getScene() != "empty":
-            if (platform.system() == "Windows"):
-                gazebo_spawn_command = f"ros2 run gazebo_ros spawn_entity.py -topic {robot_description_node_name} -entity {self.getModelName()}"
+        if (platform.system() == "Windows"):
+            gazebo_spawn_command = f"ros2 run gazebo_ros spawn_entity.py -topic {self.getRobotDescriptionTopicName()} -entity {self.getModelName()}"
 
-                # Launch CoppeliaSim
-                node_gazebo_spawn = ExecuteProcess(
-                    name="urdf_spawner",
-                    cmd=[gazebo_spawn_command],
-                    shell=True,
-                    output='screen'
-                )
-            else: 
-                node_gazebo_spawn = Node(
-                    package='gazebo_ros',
-                    executable='spawn_entity.py',
-                    shell=True,
-                    output='screen',
-                    arguments=[
-                        "-topic", robot_description_node_name, 
-                        "-entity", self.getModelName(),
-                        #"-z", "0.2",
-                    ]
-                )
+            # Launch CoppeliaSim
+            node_gazebo_spawn = ExecuteProcess(
+                name="urdf_spawner",
+                cmd=[gazebo_spawn_command],
+                shell=True,
+                output='screen'
+            )
+        else: 
+            node_gazebo_spawn = Node(
+                package='gazebo_ros',
+                executable='spawn_entity.py',
+                shell=True,
+                output='screen',
+                arguments=[
+                    "-topic", self.getRobotDescriptionTopicName(), 
+                    "-entity", self.getModelName(),
+                    #"-z", "0.2",
+                ]
+            )
 
-            #self.addNode(node_gazebo_spawn)
-            self.nodesAfterSimStart.append(node_gazebo_spawn)
+        #self.addNode(node_gazebo_spawn)
+        self.nodesAfterSimStart.append(node_gazebo_spawn)
 
-    def createGazeboIgnitionNodes(self):
-        
-        # Launching Gazebo Ignition
+    def createGazeboNodes(self):
+        # Launching Gazebo
         node_gazebo = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [os.path.join(
@@ -117,19 +109,19 @@ class Gazebo(LaunchSimulator):
 
         self.addNode(node_gazebo)
             
-        # Spawning model
-        node_gazebo_spawn = Node(
-            package='ros_gz_sim',
-            executable='create',
-            arguments=[
-                '-string', self.getRobotDescription(),
-                '-name', self.getModelName(),
-                '-allow_renaming', 'true'
-            ],
-            output='screen'
-        )
+        # # Spawning model
+        # node_gazebo_spawn = Node(
+        #     package='ros_gz_sim',
+        #     executable='create',
+        #     arguments=[
+        #         '-topic', self.getRobotDescriptionTopicName(),
+        #         '-name', self.getModelName(),
+        #         '-allow_renaming', 'true'
+        #     ],
+        #     output='screen'
+        # )
 
-        self.addNode(node_gazebo_spawn)
+        # self.addNode(node_gazebo_spawn)
 
     def loadingROS2_Control(self):
         # Regular expression pattern to find content between <parameters> and </parameters>, getting the path of the *.yaml file using regex
@@ -194,20 +186,19 @@ class Gazebo(LaunchSimulator):
         # Launch Gazebo
         if(self.getGazeboVersion()=="classic"):
             self.createGazeboClassicNodes()
-        elif(self.getGazeboVersion()=="ignition"):
-            self.createGazeboIgnitionNodes()
+        elif(self.getGazeboVersion()=="latest"):
+            self.createGazeboNodes()
 	
         # ===============================================================
         # ==== Loading controllers and broadcaster from ROS2 Control ====
         # ===============================================================
-        if(self.getScene() != "empty"):
-            self.loadingROS2_Control()
+        #self.loadingROS2_Control()
 
-        # Event to launch nodes after the clock_checker process exits
-        clock_event_handler = launch.actions.RegisterEventHandler(
-            event_handler=launch.event_handlers.OnProcessExit(
-                target_action=self.clock_checker,
-                on_exit=self.nodesAfterSimStart,
-            )
-        )
-        self.addNode(clock_event_handler)
+        # # Event to launch nodes after the clock_checker process exits
+        # clock_event_handler = launch.actions.RegisterEventHandler(
+        #     event_handler=launch.event_handlers.OnProcessExit(
+        #         target_action=self.clock_checker,
+        #         on_exit=self.nodesAfterSimStart,
+        #     )
+        # )
+        # self.addNode(clock_event_handler)

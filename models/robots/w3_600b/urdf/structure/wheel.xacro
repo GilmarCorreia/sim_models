@@ -17,14 +17,14 @@
             <visual>
                 <origin xyz="0 0 ${wheel_z_offset}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/${name}_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
-                <material name="silver"/>
+                <material name="dark_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 ${wheel_z_offset}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/${name}_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}_wheel.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>

@@ -22,7 +22,7 @@ default_class = "robots"
 default_model = "w3_600b"
 default_model_name = "w3_600b"
 
-#Choose between "ignition" or "classic"
+#Choose between "latest" or "classic"
 default_gazebo = "classic"
 
 # Models supported organized by class
@@ -38,7 +38,7 @@ def generate_launch_description():
     scene_arg = DeclareLaunchArgument(name="scene",default_value=str("empty"), description='Set the desired scene (default: empty)')
     launch_rviz2_arg = DeclareLaunchArgument(name='launch_rviz2', default_value='false', description='Execute rviz2 automatically (default: false)')
     launch_coppelia_arg = DeclareLaunchArgument(name='launch_coppelia', default_value='false', description='Execute CoppeliaSim automatically (default: false)')
-    launch_gazebo_arg = DeclareLaunchArgument(name='launch_gazebo', default_value='false', description='Execute Gazebo automatically (default: false)')
+    launch_gazebo_arg = DeclareLaunchArgument(name='launch_gazebo', default_value='classic', description='Execute Gazebo version automatically (default: classic)')
     launch_isaac_arg = DeclareLaunchArgument(name='launch_isaac', default_value='false', description='Execute IsaacSim automatically (default: false)')
     enable_headless = DeclareLaunchArgument(name='enable_headless', default_value='false', description='Execute simulation in headless mode (default: false)')
 
@@ -57,14 +57,14 @@ def generate_launch_description():
         OpaqueFunction(function=launch_setup)
     ])
 
-def getRobotDescriptionRaw(model, model_class, model_name):
+def getRobotDescriptionRaw(model, model_class, model_name, gazebo_version=default_gazebo):
 
-    file_subpath = f"models/{model_class}/{model}/urdf/{model}.urdf.xacro"
+    file_subpath = f"models/{model_class}/{model}/urdf/{model}.xacro"
 
     # Create a dictionary of xacro arguments
     xacro_args = {
         'model_name': model_name,
-        'gazebo_version': default_gazebo,
+        'gazebo_version': gazebo_version,
         #'tf_prefix': model_name
     }
 
@@ -93,7 +93,7 @@ def launch_setup(context, *args, **kwargs):
     scene = LaunchConfiguration('scene').perform(context)
     launch_rviz2 = (LaunchConfiguration('launch_rviz2').perform(context) == "true")
     launch_coppelia = (LaunchConfiguration('launch_coppelia').perform(context) == "true")
-    launch_gazebo = (LaunchConfiguration('launch_gazebo').perform(context) == "true")
+    launch_gazebo = LaunchConfiguration('launch_gazebo').perform(context)
     launch_isaac = (LaunchConfiguration('launch_isaac').perform(context) == "true")
 
     enable_headless = (LaunchConfiguration('enable_headless').perform(context) == "true")
@@ -107,7 +107,7 @@ def launch_setup(context, *args, **kwargs):
         model_class = default_class
 
     model_ns = f"{model_namespace}/{model_name}"
-    robot_description_raw = getRobotDescriptionRaw(model, model_class, model_name)
+    robot_description_raw = getRobotDescriptionRaw(model, model_class, model_name, gazebo_version=launch_gazebo)
     nodes = []
 
     # Configure the node Robot_State_Publisher
@@ -124,8 +124,8 @@ def launch_setup(context, *args, **kwargs):
     if launch_coppelia:
         coppeliaConfig = CoppeliaSim(model_name, robot_description_raw, scene, enable_headless)
         nodes.extend(coppeliaConfig.getInterfaceNodes())
-    elif launch_gazebo:
-        gazeboConfig = Gazebo(default_gazebo, model_name, robot_description_raw, scene, enable_headless)
+    elif launch_gazebo in ["latest", "classic"]:
+        gazeboConfig = Gazebo(launch_gazebo, model_name, robot_description_raw, scene, enable_headless)
         nodes.extend(gazeboConfig.getInterfaceNodes())
     elif launch_isaac:
         pass

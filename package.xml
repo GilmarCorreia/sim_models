@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>w3_600b</name>
+  <name>sim_models</name>
   <version>0.0.0</version>
-  <description>The w3_600b model</description>
+  <description>Robot models for simulation</description>
   <maintainer email="gilmarcorreiajeronimo@gmail.com">Gilmar Correia</maintainer>
   <license>TODO</license>
 

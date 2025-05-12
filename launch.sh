@@ -59,7 +59,8 @@ launch_simulator() {
         #read -p "Do you want to run a controller on the robot? (y | n): " control
     fi
 
-    flags_params="total_time:=$time"
+    # flags_params="total_time:=$time"
+    
     if [[ "$headless" == "y" ]]; then
         flags_params="$flags_params enable_headless:=true"
     fi
@@ -114,49 +115,49 @@ launch_simulator() {
 
     # export SEER_CONFIG_LOGS=TRUE
     # Launch the ROS simulation
-    echo ros2 launch senai_models model_rsp.launch.py model:=$model $model_params scene:=$scene $simulator_params $flags_params
+    echo ros2 launch sim_models model_rsp.launch.py model:=$model $model_params scene:=$scene $simulator_params $flags_params
 }
 
-# # Source ROS initialization (replace with your correct ROS init script)T
-# source ~/.bashrc
+# Source ROS initialization (replace with your correct ROS init script)T
+source ~/.bashrc
 
-# # Prompt the user for the model to launch
-# if [[ $# -eq 0 ]]; then
-#     echo "No arguments supplied"
-#     read -p "Enter the model to launch (w3_600b): " model
-#     args=n
-# else
-#     args=y
-#     model=$1
-#     model_config=y
-#     scene=$2
-#     simulator=$3
-#     rviz_config=n
-#     headless=n
-#     logger=y
-#     control=y
-#     time=$4
-#     controller=$5
-# fi
+# Prompt the user for the model to launch
+if [[ $# -eq 0 ]]; then
+    echo "No arguments supplied"
+    read -p "Enter the model to launch (w3_600b): " model
+    args=n
+else
+    args=y
+    model=$1
+    model_config=y
+    scene=$2
+    simulator=$3
+    rviz_config=n
+    headless=n
+    # logger=y
+    # control=y
+    # time=$4
+    # controller=$5
+fi
 
-# if [[ "$model" != "w3_600b" ]]; then
-#     exit 0
-# fi
+if [[ "$model" != "w3_600b" ]]; then
+    exit 0
+fi
 
-# # Prompt for model usage
-# if [[ "$args" == "n" ]]; then
-#     read -p "Do you want to use the default development configuration? (y | n): " model_config
-# fi
+# Prompt for model usage
+if [[ "$args" == "n" ]]; then
+    read -p "Do you want to use the default development configuration? (y | n): " model_config
+fi
 
-# if [[ "$model_config" == "y" ]]; then
-#     scene_config
-# elif [[ "$model_config" == "n" ]]; then
-#     custom_model
-# else
-#     exit 0
-# fi
+if [[ "$model_config" == "y" ]]; then
+    scene_config
+elif [[ "$model_config" == "n" ]]; then
+    custom_model
+else
+    exit 0
+fi
 
-# # Start the script by calling the initial scene config function
-# # scene_config
-# unset SEER_CONFIG_LOGS
-# exit 0
+# Start the script by calling the initial scene config function
+# scene_config
+unset SEER_CONFIG_LOGS
+exit 0

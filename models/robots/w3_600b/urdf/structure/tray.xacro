@@ -10,19 +10,25 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
-                <material name="silver"/>
+                <material name="top_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
 
-        <link name="rotating_base_link" />
+        <link name="rotating_base_link">
+            <inertial>
+                <origin xyz="0.000045 0.218468 -0.0000000000003836" rpy="0 0 0"/>
+                <mass value="58.666118"/>
+                <inertia ixx="2.038" ixy="0.000005613643" ixz="-0.000000000000003583" iyx="0.000005613643" iyy="5.914" iyz="-0.00000000000002564" izx="-0.000000000000003583" izy="-0.00000000000002564" izz="3.878"/>
+            </inertial>
+        </link>
 
         <joint name="tray_revolute_joint" type="revolute">
             <parent link="base_link"/>

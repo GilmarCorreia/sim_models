@@ -12,14 +12,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
-                <material name="silver"/>
+                <material name="dark_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
@@ -33,14 +33,14 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
-                <material name="silver"/>
+                <material name="dark_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
@@ -54,14 +54,14 @@
             <visual>
                 <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
             <!-- <collision>
                 <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision> -->
         </link>

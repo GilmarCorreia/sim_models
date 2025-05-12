@@ -17,14 +17,14 @@
 
                 <origin xyz="${x} ${y} ${z}" rpy="0 ${rotate} 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/${name}_lidar.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}_lidar.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
             <!-- <collision>
                 <origin xyz="0.424631 0.1165 0" rpy="0 1.57 0"/>
                 <geometry>
-                    <mesh filename="package://w3_600b/meshes/front_lidar.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/front_lidar.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision> -->
         </link>
@@ -71,7 +71,7 @@
                         <frame_name>${name}_lidar</frame_name>
                     </plugin>
                 </xacro:if>
-                <xacro:if value="${gazebo_version == 'ignition'}">
+                <xacro:if value="${gazebo_version == 'latest'}">
                     <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
                         <render_engine>ogre2</render_engine>
                     </plugin>

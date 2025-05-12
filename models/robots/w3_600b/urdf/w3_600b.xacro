@@ -10,7 +10,7 @@
   <xacro:arg name="gazebo_version" default="classic" />
   <xacro:property name="gazebo_version" value="$(arg gazebo_version)"/>
 
-  <coppelia_file filename="$(find w3_600b)/models/${model_class}/${model}/files/CoppeliaSim/w3_600b.ttm"/>
+  <coppelia_file filename="$(find sim_models)/models/${model_class}/${model}/files/CoppeliaSim/w3_600b.ttm"/>
 
   <!-- Offset properties -->
   <xacro:property name="caster_support_x_offset" value="0.02"/>
@@ -25,18 +25,18 @@
   <xacro:property name="tray_y_offset" value="0.21150"/>
 
   <!-- Include files -->
-  <xacro:include filename="$(find w3_600b)/urdf/materials.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/w3_600b.trans" />
-  <xacro:include filename="$(find w3_600b)/urdf/w3_600b.gazebo" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/materials.xacro" />
 
-  <xacro:include filename="$(find w3_600b)/urdf/structure/caster_wheel.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/structure/tray.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/structure/wheel.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/structure/caster_wheel.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/structure/tray.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/structure/wheel.xacro" />
 
-  <xacro:include filename="$(find w3_600b)/urdf/sensors/camera.xacro" />
-  <xacro:include filename="$(find w3_600b)/urdf/sensors/lidar.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/camera.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/lidar.xacro" />
   
   <!-- STRUCTURE -->
+
+  <link name="world_link"/>
 
   <link name="base_link">
     <inertial>
@@ -47,17 +47,23 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://w3_600b/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="silver"/>
+      <material name="blue_body"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://w3_600b/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
+
+  <joint name="base_to_world" type="fixed">
+    <parent link="world_link"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="1.57 0 0"/>
+  </joint>
 
   <xacro:caster_wheel name="br" x="-0.309" y="0.0131" z="0.248"/>
   <xacro:caster_wheel name="bl" x="-0.289" y="0.0131" z="-0.268"/>
@@ -117,17 +123,16 @@
         <ros>
           <namespace>/$(arg model_name)</namespace>
         </ros>
-        <parameters>$(find w3_600b)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
+        <parameters>$(find sim_models)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
       </plugin>
     </gazebo>
   </xacro:if>
   
-  <xacro:if value="${gazebo_version == 'ignition'}">
-    <ros2_control name="IgnitionSystem" type="system">
+  <xacro:if value="${gazebo_version == 'latest'}">
+    <ros2_control name="GazeboSimSystem" type="system">
       <hardware>
-        <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
       </hardware>
-      <!-- <joint name="${prefix}left_wheel_joint"> -->
       <joint name="left_wheel_joint">
         <command_interface name="velocity">
             <param name="min">-10</param>
@@ -136,7 +141,6 @@
         <state_interface name="position" />
         <state_interface name="velocity" />
       </joint>
-      <!-- <joint name="${prefix}right_wheel_joint"> -->
       <joint name="right_wheel_joint">
           <command_interface name="velocity">
               <param name="min">-10</param>
@@ -145,7 +149,7 @@
           <state_interface name="velocity" />
           <state_interface name="position" />
       </joint>
-      <sensor name="imu_sensor">
+      <!-- <sensor name="imu_sensor">
         <state_interface name="orientation.x" />
         <state_interface name="orientation.y" />
         <state_interface name="orientation.z" />
@@ -156,15 +160,15 @@
         <state_interface name="linear_acceleration.x" />
         <state_interface name="linear_acceleration.y" />
         <state_interface name="linear_acceleration.z" />
-      </sensor>
+      </sensor> -->
     </ros2_control>
     <gazebo>
-      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
         <ros>
           <namespace>/$(arg model_name)</namespace>
-          <remapping>/$(arg model_name)/joint_states:=/joint_state_broadcaster/joint_states</remapping>
+          <!-- <remapping>/$(arg model_name)/joint_states:=/joint_state_broadcaster/joint_states</remapping> -->
         </ros>
-        <parameters>$(find w3_600b)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
+        <parameters>$(find sim_models)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
       </plugin>
     </gazebo>
   </xacro:if>

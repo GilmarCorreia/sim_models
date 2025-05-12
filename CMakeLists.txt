@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(w3_600b)
+project(sim_models)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
