@@ -28,6 +28,16 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+add_executable(clock_waiter src/clock_waiter.cpp)
+ament_target_dependencies(clock_waiter rclcpp rosgraph_msgs)
+install(TARGETS clock_waiter
+  DESTINATION lib/${PROJECT_NAME})
+
+add_executable(clock_timer src/clock_timer.cpp)
+ament_target_dependencies(clock_timer rclcpp rosgraph_msgs)
+install(TARGETS clock_timer
+  DESTINATION lib/${PROJECT_NAME})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
