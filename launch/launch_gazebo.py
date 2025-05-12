@@ -109,17 +109,17 @@ class Gazebo(LaunchSimulator):
 
         self.addNode(node_gazebo)
             
-        # # Spawning model
-        # node_gazebo_spawn = Node(
-        #     package='ros_gz_sim',
-        #     executable='create',
-        #     arguments=[
-        #         '-topic', self.getRobotDescriptionTopicName(),
-        #         '-name', self.getModelName(),
-        #         '-allow_renaming', 'true'
-        #     ],
-        #     output='screen'
-        # )
+        # Spawning model
+        node_gazebo_spawn = Node(
+            package='ros_gz_sim',
+            executable='create',
+            arguments=[
+                '-topic', self.getRobotDescriptionTopicName(),
+                '-name', self.getModelName(),
+                '-allow_renaming', 'true'
+            ],
+            output='screen'
+        )
 
         # self.addNode(node_gazebo_spawn)
 
