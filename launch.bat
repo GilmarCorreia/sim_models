@@ -5,12 +5,12 @@ goto :INIT
 :INIT
     REM Prompt the user for the model to launch
     IF "%~1"=="" (
-        set /p "model=Enter the model to launch (mir100): "
+        set /p "model=Enter the model to launch (w3_600b): "
     ) ELSE (
         set "model=%1"
     )
 
-    set "availableModels=mir100"
+    set "availableModels=w3_600b"
     set "found=false"
     for %%i in (%availableModels%) do (
         if "%%i"=="%model%" (
@@ -179,7 +179,7 @@ goto :INIT
 
 :LAUNCH
     for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set datetime=%%I
-    set datefolder=%SEER_WS_DIR%\logs\%datetime:~0,4%-%datetime:~4,2%-%datetime:~6,2%_%datetime:~8,2%-%datetime:~10,2%-%datetime:~12,2%_%model%_%scene%_%simulator%_%time%
+    set datefolder=%SIM_WS_DIR%\logs\%datetime:~0,4%-%datetime:~4,2%-%datetime:~6,2%_%datetime:~8,2%-%datetime:~10,2%-%datetime:~12,2%_%model%_%scene%_%simulator%_%time%
     mkdir %datefolder%
     mkdir %datefolder%\%simulator%
     mkdir %datefolder%\ros
@@ -209,11 +209,11 @@ goto :INIT
         echo }
     ) > %datefolder%\config.json
 
-    set SEER_CONFIG_LOGS=TRUE
+    set SIM_CONFIG_LOGS=TRUE
 
     call %ROS_INIT_WS%
 
-    call ros2 launch senai_models model_rsp.launch.py model:=%model% %model_params% scene:=%scene% %simulator_params% %flags_params%
+    call ros2 launch sim_models model_rsp.launch.py model:=%model% %model_params% scene:=%scene% %simulator_params% %flags_params%
 
     goto :EOF
 

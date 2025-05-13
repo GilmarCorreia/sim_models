@@ -1,0 +1,21 @@
+/**:
+  controller_manager:
+    ros__parameters:
+      update_rate: 100  # Hz
+      use_sim_time: true
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      # imu_sensor_broadcaster:
+      #   type: imu_sensor_broadcaster/IMUSensorBroadcaster
+      #   filepath: package://sim_models/models/robots/w3_600b/config/classic/imu_sensor_broadcaster.yaml
+            
+      velocity_controller:
+        type: velocity_controllers/JointGroupVelocityController
+        filepath: package://sim_models/models/robots/w3_600b/config/classic/velocity_controller.yaml
+
+      # diff_drive_controller:
+      #   type: diff_drive_controller/DiffDriveController
+      #   filepath: package://sim_models/models/robots/w3_600b/config/classic/diff_drive_controller.yaml
+  

@@ -36,7 +36,7 @@ class Controller(LaunchInterface):
     def createInterfaceNodes(self):
         # Verify if clock is active
         clock_checker = Node(
-            package='senai_models',
+            package='sim_models',
             executable='clock_waiter',
             name='clock_waiter_controller',
             output='screen'
@@ -46,7 +46,7 @@ class Controller(LaunchInterface):
 
         # Controller node
         controller_node = Node(
-            package='senai_controls',
+            package='sim_controls',
             executable=self.getControllerName(),
             shell=True,
             output='screen',

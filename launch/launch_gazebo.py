@@ -59,15 +59,15 @@ class Gazebo(LaunchSimulator):
         )
         self.addNode(node_gazebo)
 
-        # # Wait until gazebo has launched
-        # self.clock_checker = Node(
-        #     package='sim_models',
-        #     executable='clock_waiter',
-        #     name='clock_waiter_gazebo',
-        #     output='screen'
-        # )
+        # Wait until gazebo has launched
+        self.clock_checker = Node(
+            package='sim_models',
+            executable='clock_waiter',
+            name='clock_waiter_gazebo',
+            output='screen'
+        )
 
-        # self.addNode(self.clock_checker)
+        self.addNode(self.clock_checker)
 
         if (platform.system() == "Windows"):
             gazebo_spawn_command = f"ros2 run gazebo_ros spawn_entity.py -topic {self.getRobotDescriptionTopicName()} -entity {self.getModelName()}"
@@ -192,13 +192,13 @@ class Gazebo(LaunchSimulator):
         # ===============================================================
         # ==== Loading controllers and broadcaster from ROS2 Control ====
         # ===============================================================
-        #self.loadingROS2_Control()
+        self.loadingROS2_Control()
 
-        # # Event to launch nodes after the clock_checker process exits
-        # clock_event_handler = launch.actions.RegisterEventHandler(
-        #     event_handler=launch.event_handlers.OnProcessExit(
-        #         target_action=self.clock_checker,
-        #         on_exit=self.nodesAfterSimStart,
-        #     )
-        # )
-        # self.addNode(clock_event_handler)
+        # Event to launch nodes after the clock_checker process exits
+        clock_event_handler = launch.actions.RegisterEventHandler(
+            event_handler=launch.event_handlers.OnProcessExit(
+                target_action=self.clock_checker,
+                on_exit=self.nodesAfterSimStart,
+            )
+        )
+        self.addNode(clock_event_handler)

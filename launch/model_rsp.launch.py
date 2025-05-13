@@ -20,7 +20,7 @@ pkg_name = 'sim_models'
 default_class = "robots"
 
 default_model = "w3_600b"
-default_model_name = "w3_600b"
+default_model_name = "r2d2"
 
 #Choose between "latest" or "classic"
 default_gazebo = "classic"

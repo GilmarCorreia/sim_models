@@ -4,7 +4,7 @@
       publish_rate: 41.2               # this is what the real MiR platform publishes (default: 50)
 
       # frame_ids (same as real MiR platform)
-      base_frame_id: base_footprint # default: base_link
+      base_frame_id: world_link # default: base_link
       # odom_frame_id: odom           # default: odom
 
       left_wheel_names: ['left_wheel_joint']

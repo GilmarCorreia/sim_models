@@ -92,7 +92,7 @@ class CoppeliaSim(LaunchSimulator):
             
             # Verify if clock is active
             clock_checker = Node(
-                package='senai_models',
+                package='sim_models',
                 executable='clock_waiter',
                 name='clock_waiter_coppeliasim',
                 output='screen'

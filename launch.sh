@@ -34,6 +34,11 @@ scene_config() {
 simulator_config() {
     if [[ "$args" == "n" ]]; then
         read -p "Enter the simulator to launch (coppelia | gazebo | isaac): " simulator
+
+        if [[ "$simulator" == "gazebo" ]]; then
+            read -p "Which gazebo version do you want to use? (classic | latest): " gazebo_version
+        fi
+
         read -p "Do you want to launch rviz2 and joint_state_publisher_gui? (y | n): " rviz_config
     fi
 
@@ -46,7 +51,7 @@ simulator_config() {
     #    conda activate gazebo
     #fi
 
-    simulator_params="$simulator_params launch_$simulator:=true"
+    simulator_params="$simulator_params launch_$simulator:=$gazebo_version"
     launch_simulator
 }
 
@@ -80,7 +85,7 @@ launch_simulator() {
     #     fi
     # fi
     
-    # folder_name=$SEER_WS_DIR/logs/$(date +"%Y-%m-%d_%H-%M-%S")_${model}_${scene}_${simulator}_${time}
+    # folder_name=$SIM_WS_DIR/logs/$(date +"%Y-%m-%d_%H-%M-%S")_${model}_${scene}_${simulator}_${time}
     # mkdir -p "$folder_name"
     # mkdir -p "$folder_name/$simulator"
     # mkdir -p "$folder_name/hardware"
@@ -113,9 +118,9 @@ launch_simulator() {
     #     echo }
     # ) > $folder_name/config.json
 
-    # export SEER_CONFIG_LOGS=TRUE
+    # export SIM_CONFIG_LOGS=TRUE
     # Launch the ROS simulation
-    echo ros2 launch sim_models model_rsp.launch.py model:=$model $model_params scene:=$scene $simulator_params $flags_params
+    ros2 launch sim_models model_rsp.launch.py model:=$model $model_params scene:=$scene $simulator_params $flags_params
 }
 
 # Source ROS initialization (replace with your correct ROS init script)T
@@ -132,6 +137,9 @@ else
     model_config=y
     scene=$2
     simulator=$3
+    if [[ "$simulator" == "gazebo" ]]; then
+        gazebo_version=$4
+    fi
     rviz_config=n
     headless=n
     # logger=y
@@ -159,5 +167,5 @@ fi
 
 # Start the script by calling the initial scene config function
 # scene_config
-unset SEER_CONFIG_LOGS
+unset SIM_CONFIG_LOGS
 exit 0
