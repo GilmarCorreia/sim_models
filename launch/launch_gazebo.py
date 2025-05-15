@@ -39,8 +39,8 @@ class Gazebo(LaunchSimulator):
             "verbose": "true"
         }
 
-        if self.getScene() != "empty":
-            launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
+        # if self.getScene() != "empty":
+        launch_arguments["world"] = f"{get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
 
         if self.getEnableHeadless():
             gazebo_launch_file = "gzclient.launch.py"
@@ -108,7 +108,7 @@ class Gazebo(LaunchSimulator):
         )
 
         self.addNode(node_gazebo)
-            
+        
         # Spawning model
         node_gazebo_spawn = Node(
             package='ros_gz_sim',
@@ -121,7 +121,7 @@ class Gazebo(LaunchSimulator):
             output='screen'
         )
 
-        # self.addNode(node_gazebo_spawn)
+        self.addNode(node_gazebo_spawn)
 
     def loadingROS2_Control(self):
         # Regular expression pattern to find content between <parameters> and </parameters>, getting the path of the *.yaml file using regex
@@ -192,7 +192,7 @@ class Gazebo(LaunchSimulator):
         # ===============================================================
         # ==== Loading controllers and broadcaster from ROS2 Control ====
         # ===============================================================
-        self.loadingROS2_Control()
+        # self.loadingROS2_Control()
 
         # Event to launch nodes after the clock_checker process exits
         clock_event_handler = launch.actions.RegisterEventHandler(
