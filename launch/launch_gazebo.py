@@ -192,7 +192,7 @@ class Gazebo(LaunchSimulator):
         # ===============================================================
         # ==== Loading controllers and broadcaster from ROS2 Control ====
         # ===============================================================
-        # self.loadingROS2_Control()
+        self.loadingROS2_Control()
 
         # Event to launch nodes after the clock_checker process exits
         clock_event_handler = launch.actions.RegisterEventHandler(
