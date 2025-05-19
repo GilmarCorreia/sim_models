@@ -32,6 +32,7 @@
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/structure/wheel.xacro" />
 
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/camera.xacro" />
+  <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/imu.xacro" />
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/lidar.xacro" />
   
   <!-- STRUCTURE -->
@@ -47,14 +48,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="blue_body"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
@@ -75,6 +76,8 @@
 
   <xacro:lidar name="front" x="0.424631" y="0.1165" z="0"/>
   <xacro:lidar name="back" x="0" y="0" z="0"/> -->
+
+  <xacro:imu_gazebo/>
 
   <xacro:wheel name="left" x="0" y="0.0575" z="-0.131553"/>
   <xacro:wheel name="right" x="0" y="0.0575" z="0.131553"/>
@@ -112,7 +115,7 @@
       <state_interface name="velocity" />
       <state_interface name="position" />
     </joint>
-    <!-- <sensor name="imu_sensor">
+    <sensor name="imu_sensor">
       <state_interface name="orientation.x" />
       <state_interface name="orientation.y" />
       <state_interface name="orientation.z" />
@@ -123,7 +126,7 @@
       <state_interface name="linear_acceleration.x" />
       <state_interface name="linear_acceleration.y" />
       <state_interface name="linear_acceleration.z" />
-    </sensor> -->
+    </sensor>
   </ros2_control>
   <gazebo>
     <xacro:if value="${gazebo_version == 'classic'}">
@@ -137,7 +140,8 @@
     <plugin name="${plugin_name}" filename="${plugin_filename}">
       <ros>
         <namespace>$(arg model_name)</namespace>
-        <remapping>/$(arg model_name)/joint_states:=/encoder/joint_states</remapping>
+        <!-- <remapping>/$(arg model_name)/joint_states:=encoders/joint_states</remapping>
+        <remapping>/$(arg model_name)/dynamic_joint_states:=encoders/dynamic_joint_states</remapping> -->
       </ros>
       <parameters>$(find sim_models)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
     </plugin>

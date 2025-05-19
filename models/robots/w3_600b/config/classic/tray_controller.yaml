@@ -1,5 +1,5 @@
 /**:
-  tray_controller:
+  tray_ctrl:
     ros__parameters:
       joints: 
         - tray_revolute_joint

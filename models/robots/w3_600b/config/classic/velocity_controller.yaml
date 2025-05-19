@@ -1,5 +1,5 @@
 /**:
-  velocity_controller:
+  cmd_vel:
     ros__parameters:
       joints:
         - left_wheel_joint

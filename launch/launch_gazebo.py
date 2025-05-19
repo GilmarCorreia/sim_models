@@ -108,20 +108,40 @@ class Gazebo(LaunchSimulator):
         )
 
         self.addNode(node_gazebo)
-        
+
+        # clock bridge
+        node_clock_bridge = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            arguments=["/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock"],
+            output='screen'
+        )
+        self.addNode(node_clock_bridge)
+
+        # Wait until gazebo has launched
+        self.clock_checker = Node(
+            package='sim_models',
+            executable='clock_waiter',
+            name='clock_waiter_gazebo',
+            output='screen'
+        )
+        self.addNode(self.clock_checker)
+
         # Spawning model
         node_gazebo_spawn = Node(
             package='ros_gz_sim',
             executable='create',
+            shell=True,
+            output='screen',
             arguments=[
                 '-topic', self.getRobotDescriptionTopicName(),
                 '-name', self.getModelName(),
-                '-allow_renaming', 'true'
-            ],
-            output='screen'
+                #'-allow_renaming', 'true'
+            ]
         )
 
-        self.addNode(node_gazebo_spawn)
+        #self.addNode(node_gazebo_spawn)
+        self.nodesAfterSimStart.append(node_gazebo_spawn)
 
     def loadingROS2_Control(self):
         # Regular expression pattern to find content between <parameters> and </parameters>, getting the path of the *.yaml file using regex

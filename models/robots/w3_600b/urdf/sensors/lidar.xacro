@@ -17,14 +17,14 @@
 
                 <origin xyz="${x} ${y} ${z}" rpy="0 ${rotate} 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}_lidar.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/${name}_lidar.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
             <!-- <collision>
                 <origin xyz="0.424631 0.1165 0" rpy="0 1.57 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/front_lidar.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/front_lidar.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision> -->
         </link>
