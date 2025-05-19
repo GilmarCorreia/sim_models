@@ -1,0 +1,20 @@
+/**:
+  tray_controller:
+    ros__parameters:
+      joints: 
+        - tray_revolute_joint
+        - tray_prismatic_joint
+      command_interfaces:
+        - position
+      state_interfaces:
+        - position
+        - velocity
+      interpolate: true  # Ativa interpolação suave
+      constraints:
+        goal_time: 0.5  # Tempo para atingir o objetivo
+      # action_monitor_rate: 20.0
+      # allow_partial_joints_goal: false
+      # interpolate_from_desired_state: true
+      # gains:  # Opcional para ajuste fino
+      #   tray_revolute_joint: {p: 100, d: 1}
+      #   tray_prismatic_joint: {p: 50, d: 0.5}

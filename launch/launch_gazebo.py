@@ -145,8 +145,10 @@ class Gazebo(LaunchSimulator):
                         if(controller_name != "update_rate" and controller_name != "use_sim_time"):
 
                             token = "filepath"
-                            
+                            controller_type = values["type"]
+
                             # Spawning controller/broadcaster
+
                             if(token in values):
                                 filepath_value = values[token]
 
@@ -162,7 +164,7 @@ class Gazebo(LaunchSimulator):
                                     package='controller_manager',
                                     executable='spawner',
                                     #namespace=model_name,
-                                    arguments=[controller_name, "-p", package_path, "-c", '/'+self.getModelName()+"/controller_manager"],
+                                    arguments=[controller_name, "-n", self.getModelName(), "-t", controller_type, "-p", package_path, "-c", f"/{self.getModelName()}/controller_manager"],
                                     output='screen',
                                 )
                             else:
@@ -170,7 +172,7 @@ class Gazebo(LaunchSimulator):
                                     package='controller_manager',
                                     executable='spawner',
                                     #namespace=model_name,
-                                    arguments=[controller_name, "-c", '/'+self.getModelName()+"/controller_manager"],
+                                    arguments=[controller_name, "-n", self.getModelName(), "-t", controller_type, "-c", f"/{self.getModelName()}/controller_manager"],
                                     output='screen'
                                 )
 

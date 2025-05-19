@@ -4,13 +4,17 @@
       update_rate: 100  # Hz
       use_sim_time: true
 
-      joint_state_broadcaster:
+      encoder:
         type: joint_state_broadcaster/JointStateBroadcaster
 
       # imu_sensor_broadcaster:
       #   type: imu_sensor_broadcaster/IMUSensorBroadcaster
       #   filepath: package://sim_models/models/robots/w3_600b/config/classic/imu_sensor_broadcaster.yaml
-            
+      
+      tray_controller:
+        type: joint_trajectory_controller/JointTrajectoryController
+        filepath: package://sim_models/models/robots/w3_600b/config/classic/tray_controller.yaml
+
       velocity_controller:
         type: velocity_controllers/JointGroupVelocityController
         filepath: package://sim_models/models/robots/w3_600b/config/classic/velocity_controller.yaml
