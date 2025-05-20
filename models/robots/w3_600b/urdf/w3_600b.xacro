@@ -75,8 +75,8 @@
   <xacro:caster_wheel name="fr" x="0.335" y="0.0131" z="0.157"/>
   <xacro:caster_wheel name="fl" x="0.335" y="0.0131" z="-0.197"/>
 
-  <!-- <xacro:camera name="downward"/>
-  <xacro:camera name="upward"/> -->
+  <xacro:camera name="down"/>
+  <xacro:camera name="up"/>
 
   <xacro:lidar name="front"/>
   <xacro:lidar name="back"/>
