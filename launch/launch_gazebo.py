@@ -106,7 +106,7 @@ class Gazebo(LaunchSimulator):
 
         # Select scene
         if self.getScene() != "empty":
-          launch_arguments["gz_args"] += f" {get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
+           launch_arguments["gz_args"] += f" {get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
         else:
            launch_arguments["gz_args"] += f" {self.default_world}"
 
