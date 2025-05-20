@@ -9,17 +9,17 @@
 
       imu_sensor:
         type: imu_sensor_broadcaster/IMUSensorBroadcaster
-        filepath: package://sim_models/models/robots/w3_600b/config/classic/imu.yaml
+        filepath: package://sim_models/models/robots/w3_600b/config/imu.yaml
       
       tray_ctrl:
         type: joint_trajectory_controller/JointTrajectoryController
-        filepath: package://sim_models/models/robots/w3_600b/config/classic/tray_controller.yaml
+        filepath: package://sim_models/models/robots/w3_600b/config/tray_controller.yaml
 
       cmd_vel:
         type: velocity_controllers/JointGroupVelocityController
-        filepath: package://sim_models/models/robots/w3_600b/config/classic/velocity_controller.yaml
+        filepath: package://sim_models/models/robots/w3_600b/config/velocity_controller.yaml
 
       # diff_drive_controller:
       #   type: diff_drive_controller/DiffDriveController
-      #   filepath: package://sim_models/models/robots/w3_600b/config/classic/diff_drive_controller.yaml
+      #   filepath: package://sim_models/models/robots/w3_600b/config/diff_drive_controller.yaml
   

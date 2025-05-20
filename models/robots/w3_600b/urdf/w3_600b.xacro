@@ -75,11 +75,11 @@
   <xacro:caster_wheel name="fr" x="0.335" y="0.0131" z="0.157"/>
   <xacro:caster_wheel name="fl" x="0.335" y="0.0131" z="-0.197"/>
 
-  <xacro:camera name="down"/>
+  <!-- <xacro:camera name="down"/>
   <xacro:camera name="up"/>
 
   <xacro:lidar name="front"/>
-  <xacro:lidar name="back"/>
+  <xacro:lidar name="back"/> -->
 
   <xacro:imu_gazebo/>
 
@@ -147,7 +147,7 @@
         <!-- <remapping>/$(arg model_name)/joint_states:=encoders/joint_states</remapping>
         <remapping>/$(arg model_name)/dynamic_joint_states:=encoders/dynamic_joint_states</remapping> -->
       </ros>
-      <parameters>$(find sim_models)/models/${model_class}/${model}/config/$(arg gazebo_version)/${model}_controllers.yaml</parameters>
+      <parameters>$(find sim_models)/models/${model_class}/${model}/config/${model}_controllers.yaml</parameters>
     </plugin>
   </gazebo>
 </robot>

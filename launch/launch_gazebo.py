@@ -96,6 +96,20 @@ class Gazebo(LaunchSimulator):
         self.nodesAfterSimStart.append(node_gazebo_spawn)
 
     def createGazeboNodes(self):
+        launch_arguments={
+            "gz_args": "-r"
+        }
+
+        # Check if simulation is headless
+        if self.getEnableHeadless():
+            launch_arguments["gz_args"] += " -s"
+
+        # Select scene
+        if self.getScene() != "empty":
+          launch_arguments["gz_args"] += f" {get_package_share_directory(self.getPkgName())}/worlds/Gazebo/{self.getScene()}.world"
+        else:
+           launch_arguments["gz_args"] += f" {self.default_world}"
+
         # Launching Gazebo
         node_gazebo = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -104,7 +118,7 @@ class Gazebo(LaunchSimulator):
                     'launch', 'gz_sim.launch.py'
                 )]
             ),
-            launch_arguments={'gz_args': f'-r {self.default_world}'}.items()
+            launch_arguments=launch_arguments.items()
         )
 
         self.addNode(node_gazebo)
@@ -131,16 +145,15 @@ class Gazebo(LaunchSimulator):
         node_gazebo_spawn = Node(
             package='ros_gz_sim',
             executable='create',
-            shell=True,
             output='screen',
             arguments=[
                 '-topic', self.getRobotDescriptionTopicName(),
                 '-name', self.getModelName(),
-                #'-allow_renaming', 'true'
+                '-allow_renaming', 'true'
             ]
         )
 
-        #self.addNode(node_gazebo_spawn)
+        # self.addNode(node_gazebo_spawn)
         self.nodesAfterSimStart.append(node_gazebo_spawn)
 
     def loadingROS2_Control(self):
@@ -196,8 +209,10 @@ class Gazebo(LaunchSimulator):
                                     output='screen'
                                 )
 
-                            #self.addNode(node_ros2_control)
+                            #if(self.getGazeboVersion()=="classic"):
                             self.nodesAfterSimStart.append(node_ros2_control)
+                            # else:
+                            #     self.addNode(node_ros2_control)
 
             except FileNotFoundError:
                 print(f"File not found: {controllers_yaml_file_path}")
@@ -217,6 +232,7 @@ class Gazebo(LaunchSimulator):
         self.loadingROS2_Control()
 
         # Event to launch nodes after the clock_checker process exits
+        # if(self.getGazeboVersion()=="classic"):
         clock_event_handler = launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=self.clock_checker,
