@@ -12,17 +12,21 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="dark_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
+
+        <gazebo reference="caster_wheel_${name}_1">
+            <material value="Gazebo/Orange" />
+        </gazebo>
 
         <link name="caster_wheel_${name}_2">
             <inertial>
@@ -33,17 +37,21 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="dark_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
+
+        <gazebo reference="caster_wheel_${name}_2">
+            <material value="Gazebo/Orange" />
+        </gazebo>
 
         <link name="caster_support_${name}">
             <inertial>
@@ -54,17 +62,21 @@
             <visual>
                 <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
             <!-- <collision>
                 <origin xyz="${-caster_support_x_offset} ${-caster_support_y_offset} 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/BREP_WITH_VOIDS_6008.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision> -->
         </link>
+
+        <gazebo reference="caster_support_${name}">
+            <material value="Gazebo/Grey" />
+        </gazebo>
         
         <!-- support joint -->
         <xacro:if value="${name == 'br'}">

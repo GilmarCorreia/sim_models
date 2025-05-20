@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="w3_600b" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  
+
   <!-- Model properties -->
   <xacro:property name="model_class" value="robots" />
   <xacro:property name="model" value="w3_600b" />
@@ -34,7 +34,7 @@
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/camera.xacro" />
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/imu.xacro" />
   <xacro:include filename="$(find sim_models)/models/${model_class}/${model}/urdf/sensors/lidar.xacro" />
-  
+
   <!-- STRUCTURE -->
 
   <link name="world_link"/>
@@ -48,17 +48,21 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="blue_body"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
   </link>
+
+  <gazebo reference="base_link">
+    <material value="Gazebo/SkyBlue" />
+  </gazebo>
 
   <joint name="base_to_world" type="fixed">
     <parent link="world_link"/>
@@ -72,10 +76,10 @@
   <xacro:caster_wheel name="fl" x="0.335" y="0.0131" z="-0.197"/>
 
   <!-- <xacro:camera name="downward"/>
-  <xacro:camera name="upward"/>
+  <xacro:camera name="upward"/> -->
 
-  <xacro:lidar name="front" x="0.424631" y="0.1165" z="0"/>
-  <xacro:lidar name="back" x="0" y="0" z="0"/> -->
+  <xacro:lidar name="front"/>
+  <xacro:lidar name="back"/>
 
   <xacro:imu_gazebo/>
 
@@ -85,7 +89,7 @@
   <xacro:tray/>
 
   <!-- CONTROL -->
-  
+
   <ros2_control name="GazeboSystem" type="system">
     <hardware>
       <xacro:if value="${gazebo_version == 'classic'}">
@@ -96,12 +100,12 @@
       </xacro:if>
     </hardware>
     <joint name="left_wheel_joint">
-      <command_interface name="velocity"/> 
+      <command_interface name="velocity"/>
       <state_interface name="position" />
       <state_interface name="velocity" />
     </joint>
     <joint name="right_wheel_joint">
-        <command_interface name="velocity"/> 
+        <command_interface name="velocity"/>
         <state_interface name="velocity" />
         <state_interface name="position" />
     </joint>

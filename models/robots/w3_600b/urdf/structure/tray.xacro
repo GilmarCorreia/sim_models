@@ -10,17 +10,21 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="top_gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="model://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
             </collision>
         </link>
+
+        <gazebo reference="tray">
+            <material value="Gazebo/DarkGrey" />
+        </gazebo>
 
         <link name="rotating_base_link">
             <inertial>
