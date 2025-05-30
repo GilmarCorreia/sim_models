@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="wheel" params="name x y z">
+
+        <xacro:property name="wheel_radius" value="${0.165/2}"/>
+        <xacro:property name="wheel_length" value="0.046"/>
+
         <link name="${name}_wheel">
             <inertial>
                 <xacro:if value="${name == 'left'}">
@@ -22,9 +26,9 @@
                 <material name="dark_gray"/>
             </visual>
             <collision>
-                <origin xyz="0 0 ${wheel_z_offset}" rpy="0 0 0"/>
+                <origin xyz="0 0 -${wheel_length/2}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}_wheel.stl" scale="0.001 0.001 0.001"/>
+                    <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
                 </geometry>
             </collision>
         </link>

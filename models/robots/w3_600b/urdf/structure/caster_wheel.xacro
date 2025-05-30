@@ -2,6 +2,11 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="caster_wheel" params="name x y z">
 
+        <xacro:property name="caster_radius" value="${0.0762/2}"/>
+        <xacro:property name="caster_length" value="0.02413"/>
+        <xacro:property name="collision_offset" value="${caster_length/2}"/>
+        <xacro:property name="caster_z_offset" value="0.001"/>
+
         <!-- BACK RIGHT CASTER -->
         <link name="caster_wheel_${name}_1">
             <inertial>
@@ -17,9 +22,9 @@
                 <material name="dark_gray"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 0 ${collision_offset + caster_z_offset}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_6641.stl" scale="0.001 0.001 0.001"/>
+                    <cylinder radius="${caster_radius}" length="${caster_length}"/>
                 </geometry>
             </collision>
         </link>
@@ -42,9 +47,9 @@
                 <material name="dark_gray"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 0 -${collision_offset + caster_z_offset}" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/MANIFOLD_SOLID_BREP_7274.stl" scale="0.001 0.001 0.001"/>
+                    <cylinder radius="${caster_radius}" length="${caster_length}"/>
                 </geometry>
             </collision>
         </link>

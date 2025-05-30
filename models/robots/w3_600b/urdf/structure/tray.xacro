@@ -3,12 +3,12 @@
     <xacro:macro name="tray" params="">
         <link name="tray">
             <inertial>
-                <origin xyz="0.000045 0.218468 -0.0000000000003836" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <mass value="58.666118"/>
                 <inertia ixx="2.038" ixy="0.000005613643" ixz="-0.000000000000003583" iyx="0.000005613643" iyy="5.914" iyz="-0.00000000000002564" izx="-0.000000000000003583" izy="-0.00000000000002564" izz="3.878"/>
             </inertial>
             <visual>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0 -0.218468 0" rpy="0 0 0"/>
                 <geometry>
                     <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
                 </geometry>
@@ -17,7 +17,7 @@
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <box size="0.924 0.014 0.650"/>
                 </geometry>
             </collision>
         </link>
@@ -28,7 +28,7 @@
 
         <link name="rotating_base_link">
             <inertial>
-                <origin xyz="0.000045 0.218468 -0.0000000000003836" rpy="0 0 0"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <mass value="58.666118"/>
                 <inertia ixx="2.038" ixy="0.000005613643" ixz="-0.000000000000003583" iyx="0.000005613643" iyy="5.914" iyz="-0.00000000000002564" izx="-0.000000000000003583" izy="-0.00000000000002564" izz="3.878"/>
             </inertial>
@@ -37,7 +37,7 @@
         <joint name="tray_revolute_joint" type="revolute">
             <parent link="base_link"/>
             <child link="rotating_base_link"/>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0.218468 0" rpy="0 0 0"/>
             <axis xyz="0 1 0"/>
             <limit effort="5886" velocity="${300*(3.14/180)}" lower="-6.28" upper="6.28"/>
             <dynamics damping="0.5" friction="0.1"/>
