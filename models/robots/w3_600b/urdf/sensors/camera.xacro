@@ -10,7 +10,12 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}ward_camera.stl" scale="0.001 0.001 0.001"/>
+                    <xacro:if value="${simplified_mesh == 1}">
+                        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}ward_camera_simp.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:if value="${simplified_mesh == 0}">
+                        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/${name}ward_camera.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
                 </geometry>
                 <material name="silver"/>
             </visual>

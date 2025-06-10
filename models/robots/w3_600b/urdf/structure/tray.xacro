@@ -10,7 +10,12 @@
             <visual>
                 <origin xyz="0 -0.218468 0" rpy="0 0 0"/>
                 <geometry>
-                    <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    <xacro:if value="${simplified_mesh == 1}">
+                        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray_simp.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:if value="${simplified_mesh == 0}">
+                        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/tray.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
                 </geometry>
                 <material name="top_gray"/>
             </visual>

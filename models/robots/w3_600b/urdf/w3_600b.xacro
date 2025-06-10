@@ -5,6 +5,8 @@
   <xacro:property name="model_class" value="robots" />
   <xacro:property name="model" value="w3_600b" />
   <xacro:arg name="model_name" default="r2d2" />
+  <xacro:arg name="simplified_mesh" default="1" />
+  <xacro:property name="simplified_mesh" value="$(arg simplified_mesh)"/>
 
   <!-- Simulation properties -->
   <xacro:arg name="gazebo_version" default="classic" />
@@ -48,7 +50,12 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        <xacro:if value="${simplified_mesh == 1}">
+          <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2_simp.stl" scale="0.001 0.001 0.001"/>
+        </xacro:if>
+        <xacro:if value="${simplified_mesh == 0}">
+          <mesh filename="package://sim_models/models/${model_class}/${model}/meshes/base_link_v2.stl" scale="0.001 0.001 0.001"/>
+        </xacro:if>
       </geometry>
       <material name="blue_body"/>
     </visual>
